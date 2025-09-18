@@ -87,12 +87,18 @@
     }
 
     .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      /* justify-content: center; */
+      padding: 32px 0;
     }
 
     .card {
+      flex: 1 1 300px;
+      max-width: 32%;
+      min-width: 260px;
+      box-sizing: border-box;
       background: white;
       border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -126,4 +132,16 @@
       margin: 0;
       font-size: 0.95rem;
       color: #666;
+    }
+    /* Responsive: On mobile, cards take full width */
+    @media (max-width: 768px) {
+      .card {
+        max-width: 100%;
+        min-width: 0;
+      }
+      .card-grid {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+      }
     }
