@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 900px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "3 Good Health and Well Being", "label": "3 Good Health and Well Being", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Medicine \u0026 Health", "label": "Medicine \u0026 Health", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "7 Affordable and Clean Energy", "label": "7 Affordable and Clean Energy", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Engineering", "label": "Engineering", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Science", "label": "Science", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Arts, Design \u0026 Architecture", "label": "Arts, Design \u0026 Architecture", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Faculty of Medicine", "label": "Faculty of Medicine", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "13 Climate Action", "label": "13 Climate Action", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "15 Life on Land", "label": "15 Life on Land", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "14 Life Below Water", "label": "14 Life Below Water", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Operations Division", "label": "Operations Division", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "4 Quality Education", "label": "4 Quality Education", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "11 Sustainable Cities and Communities", "label": "11 Sustainable Cities and Communities", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "UNSW Canberra", "label": "UNSW Canberra", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "16 Peace, Justice and Strong Institutions", "label": "16 Peace, Justice and Strong Institutions", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Business", "label": "Business", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Faculty of Engineering", "label": "Faculty of Engineering", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Division of VC \u0026 President", "label": "Division of VC \u0026 President", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Law \u0026 Justice", "label": "Law \u0026 Justice", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Research \u0026 Enterprise", "label": "Research \u0026 Enterprise", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "5 Gender Equality", "label": "5 Gender Equality", "shape": "dot"}, {"color": {"background": "limegreen", "border": "limegreen", "highlight": {"background": "green", "border": "green"}}, "font": {"color": "green", "highlight": {"background": "mediumblue", "border": "mediumblue", "size": 36}, "size": 16}, "id": "Faculty of Science", "label": "Faculty of Science", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "12 Responsible Consumption and Production", "label": "12 Responsible Consumption and Production", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "2 Zero Hunger", "label": "2 Zero Hunger", "shape": "dot"}, {"color": {"background": "skyblue", "border": "skyblue", "highlight": {"background": "mediumblue", "border": "mediumblue"}}, "font": {"color": "mediumblue", "size": 16}, "id": "6 Clean Water and Sanitation", "label": "6 Clean Water and Sanitation", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 9796", "to": "Medicine \u0026 Health", "value": 9796}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "7 Affordable and Clean Energy", "title": "Count: 2163", "to": "Engineering", "value": 2163}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 1101", "to": "Science", "value": 1101}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 985", "to": "Arts, Design \u0026 Architecture", "value": 985}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 948", "to": "Faculty of Medicine", "value": 948}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "13 Climate Action", "title": "Count: 943", "to": "Science", "value": 943}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "7 Affordable and Clean Energy", "title": "Count: 739", "to": "Science", "value": 739}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "15 Life on Land", "title": "Count: 685", "to": "Science", "value": 685}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "13 Climate Action", "title": "Count: 612", "to": "Engineering", "value": 612}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "14 Life Below Water", "title": "Count: 601", "to": "Science", "value": 601}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "7 Affordable and Clean Energy", "title": "Count: 524", "to": "Operations Division", "value": 524}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "4 Quality Education", "title": "Count: 417", "to": "Medicine \u0026 Health", "value": 417}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "4 Quality Education", "title": "Count: 415", "to": "Arts, Design \u0026 Architecture", "value": 415}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 295", "to": "Engineering", "value": 295}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "11 Sustainable Cities and Communities", "title": "Count: 285", "to": "Arts, Design \u0026 Architecture", "value": 285}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "7 Affordable and Clean Energy", "title": "Count: 269", "to": "UNSW Canberra", "value": 269}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 259", "to": "Operations Division", "value": 259}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "16 Peace, Justice and Strong Institutions", "title": "Count: 218", "to": "Medicine \u0026 Health", "value": 218}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "16 Peace, Justice and Strong Institutions", "title": "Count: 211", "to": "Arts, Design \u0026 Architecture", "value": 211}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 200", "to": "Business", "value": 200}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "7 Affordable and Clean Energy", "title": "Count: 188", "to": "Faculty of Engineering", "value": 188}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 182", "to": "Division of VC \u0026 President", "value": 182}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "13 Climate Action", "title": "Count: 181", "to": "Operations Division", "value": 181}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "16 Peace, Justice and Strong Institutions", "title": "Count: 152", "to": "Law \u0026 Justice", "value": 152}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "13 Climate Action", "title": "Count: 151", "to": "UNSW Canberra", "value": 151}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "7 Affordable and Clean Energy", "title": "Count: 146", "to": "Research \u0026 Enterprise", "value": 146}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "13 Climate Action", "title": "Count: 143", "to": "Arts, Design \u0026 Architecture", "value": 143}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "5 Gender Equality", "title": "Count: 143", "to": "Medicine \u0026 Health", "value": 143}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "7 Affordable and Clean Energy", "title": "Count: 130", "to": "Faculty of Science", "value": 130}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "7 Affordable and Clean Energy", "title": "Count: 128", "to": "Arts, Design \u0026 Architecture", "value": 128}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "12 Responsible Consumption and Production", "title": "Count: 127", "to": "Engineering", "value": 127}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "13 Climate Action", "title": "Count: 121", "to": "Faculty of Science", "value": 121}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "15 Life on Land", "title": "Count: 113", "to": "Engineering", "value": 113}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "2 Zero Hunger", "title": "Count: 112", "to": "Medicine \u0026 Health", "value": 112}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "2 Zero Hunger", "title": "Count: 105", "to": "Science", "value": 105}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "11 Sustainable Cities and Communities", "title": "Count: 105", "to": "Engineering", "value": 105}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "15 Life on Land", "title": "Count: 101", "to": "Arts, Design \u0026 Architecture", "value": 101}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "6 Clean Water and Sanitation", "title": "Count: 94", "to": "Engineering", "value": 94}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "3 Good Health and Well Being", "title": "Count: 93", "to": "Research \u0026 Enterprise", "value": 93}, {"color": {"color": "lightgrey", "highlight": "darkslategrey", "inherit": "false"}, "from": "5 Gender Equality", "title": "Count: 82", "to": "Arts, Design \u0026 Architecture", "value": 82}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"scaling": {"min": 10, "max": 40}, "color": {"highlight": {"background": "orange"}}}, "edges": {"scaling": {"min": 1, "max": 20}, "smooth": true}, "physics": {"solver": "forceAtlas2Based", "forceAtlas2Based": {"gravitationalConstant": -50, "centralGravity": 0.005, "springLength": 100, "springConstant": 0.08, "damping": 0.1, "avoidOverlap": 1}, "minVelocity": 0.5, "timestep": 0.35, "stabilization": false}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
